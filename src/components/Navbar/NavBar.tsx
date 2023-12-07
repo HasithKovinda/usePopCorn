@@ -1,15 +1,19 @@
 
-import Logo from "./Logo";
-import NumResults from "./NumResults";
-import Search from "./Search";
+import { type ReactNode } from "react";
 
-function NavBar() {
+import Logo from "./Logo";
+
+
+type NavBarProps ={
+  children:ReactNode
+}
+
+function NavBar({children}:NavBarProps) {
 
   return (
     <nav className="nav-bar">
       <Logo/>
-      <Search/>
-      <NumResults/>
+       {children}
     </nav>
   )
 }

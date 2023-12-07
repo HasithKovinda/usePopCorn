@@ -1,6 +1,16 @@
 
-import {  type MovieArray} from './ListBox'
 import Movie from './Movie'
+
+export type MovieData= {
+  imdbID:string
+  Title:string
+  Year:string
+  Poster:string
+}
+
+export type MovieArray={
+  movies:MovieData[]
+}
 
  
 function MovieList({movies}:MovieArray) {

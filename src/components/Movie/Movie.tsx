@@ -1,4 +1,4 @@
-import {MovieData} from './ListBox'
+import { MovieData } from "./MovieList"
 
 interface singleMovie{
     movie:MovieData

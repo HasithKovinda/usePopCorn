@@ -1,18 +1,10 @@
-import { useState } from "react";
-import MovieList from "./MovieList";
+import { ReactNode, useState } from "react";
 
-export type MovieData= {
-    imdbID:string
-    Title:string
-    Year:string
-    Poster:string
+type ListBoxProps ={
+  children:ReactNode
 }
 
-export type MovieArray={
-    movies:MovieData[]
-}
-
-function ListBox({movies}:MovieArray) {
+function ListBox({children}:ListBoxProps) {
  const [isOpen1, setIsOpen1] = useState(true);
   return (
     <div className="box">
@@ -23,7 +15,7 @@ function ListBox({movies}:MovieArray) {
       {isOpen1 ? "–" : "+"}
     </button>
     {isOpen1 && (
-      <MovieList movies={movies} />
+      children
     )}
   </div>
   )

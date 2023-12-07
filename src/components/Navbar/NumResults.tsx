@@ -1,8 +1,10 @@
+import { MovieArray } from "../Movie/MovieList"
 
-function NumResults() {
+
+function NumResults({movies}:MovieArray) {
   return (
     <p className="num-results">
-    Found <strong>X</strong> results
+    Found <strong>{movies.length}</strong> results
     </p>
   )
 }

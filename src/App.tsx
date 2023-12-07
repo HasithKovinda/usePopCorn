@@ -2,6 +2,10 @@
 import NavBar from "./components/Navbar/NavBar";
 import ListBox from "./components/Movie/ListBox";
 import WatchedList from "./components/Watch/WatchedList";
+import Search from "./components/Navbar/Search";
+import NumResults from "./components/Navbar/NumResults";
+import Main from "./main";
+import MovieList from "./components/Movie/MovieList";
 
 const tempMovieData = [
   {
@@ -54,11 +58,16 @@ const tempWatchedData = [
 export default function App() {
   return (
     <>
-    <NavBar/>
-      <main className="main">
-       <ListBox movies={tempMovieData} />
-       <WatchedList watchList={tempWatchedData}/>
-      </main>
+    <NavBar>
+      <Search/>
+      <NumResults movies={tempMovieData} />
+    </NavBar>
+     <Main>
+      <ListBox>
+         <MovieList movies={tempMovieData} />
+      </ListBox>
+      <WatchedList watchList={tempWatchedData}/>
+     </Main>
     </>
   );
 }

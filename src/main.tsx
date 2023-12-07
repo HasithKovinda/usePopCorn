@@ -1,10 +1,15 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+import { type ReactNode } from 'react'
+type mainProps={
+  children:ReactNode
+}
+
+function Main({children}:mainProps) {
+  return (
+    <main className="main">
+      {children}
+   </main>
+  )
+}
+
+export default Main
