@@ -8,69 +8,48 @@ import Box from "./components/Box";
 import Summary from "./components/Watch/Summary";
 import WatchedMovieList from "./components/Watch/WatchedMovieList";
 import { useEffect, useState } from "react";
-import { MovieArray, MovieData, watchMovieData, watchedMovieArray } from "./types/types";
+import {MovieData, watchMovieData} from "./types/types";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/Error";
+import MovieDetails from "./components/Movie/MovieDetails";
 
-const tempMovieData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt0133093",
-    Title: "The Matrix",
-    Year: "1999",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt6751668",
-    Title: "Parasite",
-    Year: "2019",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
-  },
-];
-
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
-  },
-];
 
 const key = "b2bcf820";
-const query='harry potterfvdfvf'
+// const query='harry potter'
 
 export default function App() {
   const [movies, setMovies] = useState<MovieData []>([]);
   const [watched, setWatched] = useState<watchMovieData []>([]);
+  const [query, setQuery] = useState<string>("");
   const[isLoading,setIsLoading] =useState(false)
   const[error,setError] =useState("")
+  const[selectedId,setSelectedId] =useState<string |null>(null)
+
+
+  function handleSelectedId(id:string){
+    setSelectedId(id)
+  }
+
+  function handleClose(){
+   setSelectedId(null)
+  }
+
+  function handleWatchedList(movie:watchMovieData){
+     setWatched((watched)=>[...watched,movie])
+  }
+
+  function handleDeleteMovie(id:string){
+     const movies = watched.filter((movie)=>movie.imdbID!==id)
+     setWatched(movies)
+   }
+ 
+
+
   
   async function getMovies():Promise<void>{
    try {
     setIsLoading(true)
+    setError('')
     const res = await fetch(
       `http://www.omdbapi.com/?apikey=${key}&S=${query}`,
     );
@@ -93,24 +72,31 @@ export default function App() {
   }
 
   useEffect(()=>{
+    if(query.length<3){
+      setMovies([])
+      setError('')
+      return
+    }
    getMovies()
-  },[])
+  },[query])
 
   return (
     <>
     <NavBar>
-      <Search/>
+      <Search query={query} setQuery={setQuery} />
       <NumResults movies={movies} />
     </NavBar>
      <Main>
       <Box>
         {isLoading && <Loading/>}
-        {!isLoading && !error && <MovieList movies={movies} />}
+        {!isLoading && !error && <MovieList  movies={movies} handleClick={handleSelectedId} />}
         {error && <ErrorMessage message={error} />}
       </Box>
       <Box>
-      <Summary watchList={watched} />
-      <WatchedMovieList watchList={watched} />
+        {selectedId ? <MovieDetails id={selectedId} handleClose={handleClose} addMovie={handleWatchedList} watchMovies={watched}/>:  <>
+        <Summary watchList={watched} />
+        <WatchedMovieList watchList={watched} deleteWatchedMovie={handleDeleteMovie} />
+        </>}
       </Box>
      </Main>
     </>

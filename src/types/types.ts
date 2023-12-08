@@ -2,13 +2,14 @@
 
 export type MovieData= {
     imdbID:string
-    Title:string
-    Year:string
-    Poster:string
+    title:string
+    year:string
+    poster:string
   }
   
 export type MovieArray={
     movies:MovieData[]
+    handleClick?:(id:string)=>void
 }
 
 
@@ -23,4 +24,5 @@ export type watchMovieData ={
 
 export type watchedMovieArray={
     watchList: watchMovieData[]
+    deleteWatchedMovie?:(id:string)=>void
 }

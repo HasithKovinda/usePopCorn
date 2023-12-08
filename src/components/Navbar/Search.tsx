@@ -1,7 +1,10 @@
-import { useState } from "react";
 
-function Search() {
-    const [query, setQuery] = useState<string>("");
+type SearchProps={
+  query:string
+  setQuery:(query:string)=>void
+}
+
+function Search({query,setQuery}:SearchProps) {
   return (
     <input
       className="search"

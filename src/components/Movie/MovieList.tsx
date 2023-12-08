@@ -3,11 +3,11 @@ import { type MovieArray } from '../../types/types'
 import Movie from './Movie'
 
  
-function MovieList({movies}:MovieArray) {
+function MovieList({movies,handleClick}:MovieArray) {
   return (
     <ul className="list">
         {movies?.map((movie) => (
-         <Movie movie={movie} key={movie.imdbID} />
+         <Movie movie={movie} key={movie.imdbID} handleClick={handleClick!} />
         ))}
     </ul>
   )
