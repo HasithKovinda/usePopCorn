@@ -1,8 +1,9 @@
 import { MovieData } from "./MovieList"
-
 interface singleMovie{
-    movie:MovieData
+  movie:MovieData
 }
+
+ 
 
 function Movie({movie}:singleMovie) {
   return (

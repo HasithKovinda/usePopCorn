@@ -1,16 +1,6 @@
 
+import { type MovieArray } from '../../types/types'
 import Movie from './Movie'
-
-export type MovieData= {
-  imdbID:string
-  Title:string
-  Year:string
-  Poster:string
-}
-
-export type MovieArray={
-  movies:MovieData[]
-}
 
  
 function MovieList({movies}:MovieArray) {

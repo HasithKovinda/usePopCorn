@@ -1,4 +1,5 @@
-import { type watchedMovieArray } from "./WatchedList"
+import { type watchedMovieArray } from "../../types/types"
+
 
 function WatchedMovieList({watchList:watched}:watchedMovieArray) {
   return (

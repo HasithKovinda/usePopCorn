@@ -1,11 +1,16 @@
 
 import NavBar from "./components/Navbar/NavBar";
-import ListBox from "./components/Movie/ListBox";
-import WatchedList from "./components/Watch/WatchedList";
 import Search from "./components/Navbar/Search";
 import NumResults from "./components/Navbar/NumResults";
-import Main from "./main";
+import Main from "./components/Main";
 import MovieList from "./components/Movie/MovieList";
+import Box from "./components/Box";
+import Summary from "./components/Watch/Summary";
+import WatchedMovieList from "./components/Watch/WatchedMovieList";
+import { useEffect, useState } from "react";
+import { MovieArray, MovieData, watchMovieData, watchedMovieArray } from "./types/types";
+import Loading from "./components/Loading";
+import ErrorMessage from "./components/Error";
 
 const tempMovieData = [
   {
@@ -54,19 +59,59 @@ const tempWatchedData = [
   },
 ];
 
+const key = "b2bcf820";
+const query='harry potterfvdfvf'
 
 export default function App() {
+  const [movies, setMovies] = useState<MovieData []>([]);
+  const [watched, setWatched] = useState<watchMovieData []>([]);
+  const[isLoading,setIsLoading] =useState(false)
+  const[error,setError] =useState("")
+  
+  async function getMovies():Promise<void>{
+   try {
+    setIsLoading(true)
+    const res = await fetch(
+      `http://www.omdbapi.com/?apikey=${key}&S=${query}`,
+    );
+    if(!res.ok) {
+      throw new Error('Fail to fetch movies')
+    }
+    const data = await res.json()
+    if(data.Response==='False'){
+      throw new Error('No movies found')
+    }
+    const movies:MovieData [] = data.Search
+    setMovies(movies)
+   } catch (error) {
+     if(error instanceof Error){
+      setError(error.message)
+     }
+   }finally{
+    setIsLoading(false)
+   }
+  }
+
+  useEffect(()=>{
+   getMovies()
+  },[])
+
   return (
     <>
     <NavBar>
       <Search/>
-      <NumResults movies={tempMovieData} />
+      <NumResults movies={movies} />
     </NavBar>
      <Main>
-      <ListBox>
-         <MovieList movies={tempMovieData} />
-      </ListBox>
-      <WatchedList watchList={tempWatchedData}/>
+      <Box>
+        {isLoading && <Loading/>}
+        {!isLoading && !error && <MovieList movies={movies} />}
+        {error && <ErrorMessage message={error} />}
+      </Box>
+      <Box>
+      <Summary watchList={watched} />
+      <WatchedMovieList watchList={watched} />
+      </Box>
      </Main>
     </>
   );

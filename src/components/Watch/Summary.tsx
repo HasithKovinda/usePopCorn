@@ -1,5 +1,5 @@
+import { watchedMovieArray } from "./WatchedMovieList";
 
-import {watchedMovieArray} from './WatchedList'
 
 const average = (arr:number[]) =>
   arr.reduce((acc:number, cur:number,) => acc + cur / arr.length, 0);
