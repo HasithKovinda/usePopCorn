@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { MovieData } from "../types/types";
+import { type MovieData } from "../types/types";
 
-// const key = "b2bcf820";
 
-const key= import.meta.env.API_KEY;
+const apiKey= import.meta.env.VITE_API_KEY;
+
 
 export function useMovies(query:string,callBack?:Function){
     const [movies, setMovies] = useState<MovieData []>([]);
@@ -15,7 +15,7 @@ export function useMovies(query:string,callBack?:Function){
          setIsLoading(true)
          setError('')
          const res = await fetch(
-           `http://www.omdbapi.com/?apikey=${key}&S=${key}`,{
+           `http://www.omdbapi.com/?apikey=${apiKey}&S=${query}`,{
              signal:controller.signal
            }
          );

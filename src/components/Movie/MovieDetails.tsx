@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import StarRating from "../rating/StarRating";
 import Loading from "../Loading";
-import { watchMovieData } from "../../types/types";
+import {type watchMovieData } from "../../types/types";
+import { useKey } from "../../hooks/useKey";
 
 type MovieDetailsProps={
   id:string,
@@ -24,7 +25,7 @@ type movieDetails={
 }
 
 // const KEY = process.env.REACT_APP_API_KEY;
-const KEY = import.meta.env.API_KEY;
+const KEY = import.meta.env.VITE_API_KEY;
 
 function MovieDetails({id,handleClose,addMovie,watchMovies}:MovieDetailsProps) {
   const [movie, setMovie] = useState<Partial<movieDetails>>({});
@@ -86,17 +87,8 @@ function MovieDetails({id,handleClose,addMovie,watchMovies}:MovieDetailsProps) {
     }
   },[title])
 
-  useEffect(()=>{
-    const handleEvent= (e:KeyboardEvent)=>{
-      if(e.code==='Escape'){
-        console.log('called')
-        handleClose()
-      }
-  }
-    document.addEventListener('keydown',handleEvent)
+  useKey('Escape',handleClose)
 
-    return ()=>document.removeEventListener('keydown',handleEvent)
-  },[handleClose])
   return (
     <div className="details">
     {isLoading ? (

@@ -1,4 +1,4 @@
-import { MovieData } from "../../types/types"
+import {type MovieData } from "../../types/types"
 
 interface singleMovie{
   movie:MovieData

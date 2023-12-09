@@ -1,4 +1,5 @@
-import { MovieArray } from "../Movie/MovieList"
+import { type MovieArray } from "../../types/types"
+
 
 
 function NumResults({movies}:MovieArray) {
