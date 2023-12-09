@@ -8,11 +8,12 @@ import Box from "./components/Box";
 import Summary from "./components/Watch/Summary";
 import WatchedMovieList from "./components/Watch/WatchedMovieList";
 import { useEffect, useState } from "react";
-import {MovieData, watchMovieData} from "./types/types";
+import {watchMovieData, watchedMovieArray} from "./types/types";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/Error";
 import MovieDetails from "./components/Movie/MovieDetails";
 import { useMovies } from "./hooks/useMovies";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
 
 
 
@@ -21,12 +22,10 @@ import { useMovies } from "./hooks/useMovies";
 export default function App() {
   const [query, setQuery] = useState<string>("");
   const[selectedId,setSelectedId] =useState<string |null>(null)
-  const [watched, setWatched] = useState<watchMovieData []>(()=>{
-    const watchedList = localStorage.getItem('watched')
-    if(watchedList)
-    return JSON.parse(watchedList)
-  });
+  
   const{isLoading,movies,error} =useMovies(query,handleClose)
+
+  const[watched,setWatched] =useLocalStorageState<watchMovieData []>([],'watched')
 
   function handleSelectedId(id:string){
     setSelectedId(id)
@@ -45,9 +44,7 @@ export default function App() {
      setWatched(movies)
    }
 
-useEffect(()=>{
-  localStorage.setItem('watched',JSON.stringify(watched))
-},[watched])
+
 
   return (
     <>

@@ -23,7 +23,8 @@ type movieDetails={
   Genre: string
 }
 
-const KEY = "b2bcf820";
+// const KEY = process.env.REACT_APP_API_KEY;
+const KEY = import.meta.env.API_KEY;
 
 function MovieDetails({id,handleClose,addMovie,watchMovies}:MovieDetailsProps) {
   const [movie, setMovie] = useState<Partial<movieDetails>>({});
