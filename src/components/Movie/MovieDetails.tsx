@@ -76,6 +76,26 @@ function MovieDetails({id,handleClose,addMovie,watchMovies}:MovieDetailsProps) {
     },
     [id]
   );
+
+  useEffect(()=>{
+    if(!title) return
+    document.title=`Movie | ${title}`
+    return()=>{
+      document.title='usePopCorn'
+    }
+  },[title])
+
+  useEffect(()=>{
+    const handleEvent= (e:KeyboardEvent)=>{
+      if(e.code==='Escape'){
+        console.log('called')
+        handleClose()
+      }
+  }
+    document.addEventListener('keydown',handleEvent)
+
+    return ()=>document.removeEventListener('keydown',handleEvent)
+  },[handleClose])
   return (
     <div className="details">
     {isLoading ? (

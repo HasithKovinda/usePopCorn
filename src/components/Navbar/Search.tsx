@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 
 type SearchProps={
   query:string
@@ -5,6 +6,18 @@ type SearchProps={
 }
 
 function Search({query,setQuery}:SearchProps) {
+  const inputEl= useRef<HTMLInputElement>(null)
+  useEffect(()=>{
+    const callBack=(event: KeyboardEvent)=>{
+     if(document.activeElement===inputEl.current) return 
+     if(event.code==='Enter'){
+       inputEl.current!.focus()
+       setQuery("")
+     }
+    }
+    document.addEventListener('keydown',callBack)
+    return ()=>document.removeEventListener('keydown',callBack)
+  },[setQuery])
   return (
     <input
       className="search"
@@ -12,6 +25,7 @@ function Search({query,setQuery}:SearchProps) {
       placeholder="Search movies..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
+      ref={inputEl}
     />
   )
 }
