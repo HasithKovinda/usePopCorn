@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { type MovieData } from "../types/types";
+import { MovieData } from "../types/types";
 
 
 const apiKey= import.meta.env.VITE_API_KEY;
@@ -9,13 +9,15 @@ export function useMovies(query:string,callBack?:Function){
     const [movies, setMovies] = useState<MovieData []>([]);
     const[isLoading,setIsLoading] =useState(false)
     const[error,setError] =useState("")
-    async function getMovies():Promise<void>{
+    async function getMovies(controller:AbortController):Promise<void>{
         callBack?.()
         try {
          setIsLoading(true)
          setError('')
          const res = await fetch(
-           `http://www.omdbapi.com/?apikey=${apiKey}&S=${query}`
+           `https://www.omdbapi.com/?apikey=${apiKey}&S=${query}`,{
+             signal:controller.signal
+           }
          );
          if(!res.ok) {
            throw new Error('Fail to fetch movies')
@@ -47,17 +49,17 @@ export function useMovies(query:string,callBack?:Function){
        }
 
        useEffect(()=>{
-        // const controller = new AbortController()
+        const controller = new AbortController()
         if(query.length<3){
           setMovies([])
           setError('')
           return
         }
-       getMovies()
+       getMovies(controller)
     
-      //  return ()=>{
-      //   return controller.abort()
-      //  }
+       return ()=>{
+        return controller.abort()
+       }
       },[query])
 
       return {isLoading,error,movies}
