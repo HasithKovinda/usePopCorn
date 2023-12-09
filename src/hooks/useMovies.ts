@@ -9,15 +9,13 @@ export function useMovies(query:string,callBack?:Function){
     const [movies, setMovies] = useState<MovieData []>([]);
     const[isLoading,setIsLoading] =useState(false)
     const[error,setError] =useState("")
-    async function getMovies(controller:AbortController):Promise<void>{
+    async function getMovies():Promise<void>{
         callBack?.()
         try {
          setIsLoading(true)
          setError('')
          const res = await fetch(
-           `http://www.omdbapi.com/?apikey=${apiKey}&S=${query}`,{
-             signal:controller.signal
-           }
+           `http://www.omdbapi.com/?apikey=${apiKey}&S=${query}`
          );
          if(!res.ok) {
            throw new Error('Fail to fetch movies')
@@ -49,17 +47,17 @@ export function useMovies(query:string,callBack?:Function){
        }
 
        useEffect(()=>{
-        const controller = new AbortController()
+        // const controller = new AbortController()
         if(query.length<3){
           setMovies([])
           setError('')
           return
         }
-       getMovies(controller)
+       getMovies()
     
-       return ()=>{
-        return controller.abort()
-       }
+      //  return ()=>{
+      //   return controller.abort()
+      //  }
       },[query])
 
       return {isLoading,error,movies}
