@@ -22,6 +22,8 @@ import { useLocalStorageState } from "./hooks/useLocalStorageState";
 export default function App() {
   const [query, setQuery] = useState<string>("");
   const[selectedId,setSelectedId] =useState<string |null>(null)
+
+  console.log('AAAA')
   
   const{isLoading,movies,error} =useMovies(query,handleClose)
 
